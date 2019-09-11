@@ -74,11 +74,90 @@ object SparkOperators {
 
       // 10. coalesce
       // 缩减分区数,第一个分区不变，把剩下的分区合并，没有shuffle
-      val coaRDD = sc.makeRDD(1 to 20 , 5)
-      coaRDD.saveAsTextFile("out")
-      val coaleaceRDD = coaRDD.coalesce(3)
-      println("缩减分区后："+coaleaceRDD.partitions.size)
-      coaleaceRDD.saveAsTextFile("output")
+      // 有两个参数，第二个参数默认是false，不shuffle，可以设置为true，进行shuffle
+//      val coaRDD = sc.makeRDD(1 to 20 , 5)
+//      coaRDD.saveAsTextFile("out")
+//      val coaleaceRDD = coaRDD.coalesce(3)
+//      println("缩减分区后："+coaleaceRDD.partitions.size)
+//      coaleaceRDD.saveAsTextFile("output")
 
+      // 11. repartition
+      // 源码调用的是coalesce，第二个参数设置为true，coalesce(int , shuffle=true)
+//      val reparRDD = sc.makeRDD(1 to 16 , 4)
+//      val repartitionRDD  = reparRDD.repartition(2)
+//      repartitionRDD.saveAsTextFile("output")
+
+      // 12. sortBy
+      // 按照指定的函数分区，第二个参数是升降序，true是升序
+//      val sortByRDD = listRDD.sortBy(x=>x,false)
+//      sortByRDD.collect().foreach(println)
+
+      // 13.union
+      // 两个RDD合并
+//      val rdd1 = sc.makeRDD(1 to 5)
+//      val rdd2 = sc.parallelize(4 to 8)
+//      val unionRDD = rdd1.union(rdd2)
+//      unionRDD.collect().foreach(println)
+
+      // 14. substract
+      // 计算两个RDD的差集,返回第一个RDD的差集
+      // 如下两个RDD，只会返回RDD1的差集，如果反过来，则返回RDD2的差集
+//      val rdd1 = sc.makeRDD(1 to 5)
+//      val rdd2 = sc.parallelize(4 to 8)
+//      val substractRDD = rdd1.subtract(rdd2)
+//      substractRDD.collect().foreach(println)
+
+      // 15. intersection
+      // 返回两个RDD的交集
+//      val rdd1 = sc.makeRDD(1 to 5)
+//      val rdd2 = sc.parallelize(4 to 8)
+//      val intersecRDD = rdd1.intersection(rdd2)
+//      intersecRDD.collect().foreach(println)
+
+      // 16.cartesian
+      // 计算两个RDD的笛卡尔积，应尽量避免使用
+//      val rdd1 = sc.makeRDD(2 to 5)
+//      val rdd2 = sc.parallelize(5 to 8)
+//      val carteRDD = rdd1.cartesian(rdd2)
+//      carteRDD.collect().foreach(println)
+
+      // 17. zip
+      // 把两个value类型的RDD合并为一个K-V类型的RDD；注意两个RDD的分区及每个分区的数量要一致，否则报错
+//      val rdd1 = sc.makeRDD(Array(3,4,5,6),4)
+//      val rdd2 = sc.parallelize(Array("j","K","L","Q"),4)
+//      val zipRDD = rdd1.zip(rdd2)
+//      zipRDD.collect().foreach(println)
+
+      // 18. partitionBy
+      // 把KV类型RDD根据分区器分区，可自己重写分区器
+//      val kvRDD = sc.parallelize(Array(("shan",1),("hang",2),("dang",3),("xing",4)),4)
+//      val partiByRDD = kvRDD.partitionBy(new org.apache.spark.HashPartitioner(2))
+//      partiByRDD.glom().collect().foreach(println)
+
+      // 19. groupByKey
+      // KV类型的RDD，根据key分组,后续可做聚合
+//      val kvRDD = sc.parallelize(Array(("shan",1),("shan",2),("dang",3),("dang",4),("dang",1),("neng",5),("neng",1)))
+//      val groupByKeyRDD = kvRDD.groupByKey()
+//      groupByKeyRDD.collect().foreach(println)
+
+      // 20. reduceByKey
+      // KV类型RDD，根据key进行聚合
+      // 第一个参数是聚合函数，第二个参数是任务数
+//      val kvRDD = sc.parallelize(Array(("shan",1),("shan",2),("dang",3),("dang",4),("dang",1),("neng",5),("neng",1)))
+//      val reduceByKeyRDD = kvRDD.reduceByKey(_+_,3)
+//      reduceByKeyRDD.collect().foreach(println)
+
+      /*
+          groupByKey 和 reduceByKey的区别
+          两个都要进行shuffle操作，所以过程都不会快
+          但是reduceByKey 会进行预聚合，速度会比groupByKey快
+       */
+
+      // 21. aggregateByKey
+      // 3个参数: 1是初始值，2是分区里的函数规则，3是分区间的函数规则
+      val aRDD = sc.parallelize(List(("a",3),("a",5),("c",6),("c",2),("b",6)),2)
+      aRDD.collect().foreach(println)
+      val aggRDD = aRDD.aggregateByKey(0)(math.max(_,_),_+_)
+      aggRDD.collect().foreach(println)
   }
 }
