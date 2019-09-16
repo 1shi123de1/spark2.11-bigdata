@@ -155,9 +155,48 @@ object SparkOperators {
 
       // 21. aggregateByKey
       // 3个参数: 1是初始值，2是分区里的函数规则，3是分区间的函数规则
-      val aRDD = sc.parallelize(List(("a",3),("a",5),("c",6),("c",2),("b",6)),2)
-      aRDD.collect().foreach(println)
-      val aggRDD = aRDD.aggregateByKey(0)(math.max(_,_),_+_)
-      aggRDD.collect().foreach(println)
+//      val aRDD = sc.parallelize(List(("a",3),("a",5),("c",6),("c",2),("b",6)),2)
+//      aRDD.collect().foreach(println)
+//      val aggRDD = aRDD.aggregateByKey(0)(math.max(_,_),_+_)
+//      aggRDD.collect().foreach(println)
+
+      // 22. foldByKey
+      // 把相同key的值做函数运算；两个参数，第一个是初始值，第二个分区内和分区间的函数
+//      val fRDD = sc.parallelize(List((1,3),(1,5),(2,6),(2,2),(3,6),(2,9)),3)
+//      val foldRDD = fRDD.foldByKey(0)(_+_)
+//      foldRDD.collect().foreach(println)
+
+      // 23. combineByKey
+      // 以下的例子是计算pairRDD的相同key值的平均值，第一个参数是把value变成(value,1)的形式，第二个参数是计算分区内的值，第三个参数是计算分区间的值
+//      val cRDD = sc.parallelize(List(("a",3),("a",5),("c",6),("c",2),("b",6)),2)
+//      val combineRDD = cRDD.combineByKey((_,1),(acc:(Int,Int),v)=>(acc._1+v,acc._2+1),(acc1:(Int,Int),acc2:(Int,Int))=>(acc1._1+acc2._1,acc1._2+acc2._2))
+//      combineRDD.collect().foreach(println)
+
+      // 24. sortByKey
+      // 作用在pairRDD上，返回一个按照Key排序的RDD,参数false是降序，默认是升序
+//      val sRDD = sc.parallelize(Array((2,"a"),(8,"r"),(5,"ww"),(5,"zz")))
+//      val sortRDD = sRDD.sortByKey(false)
+//      sortRDD.collect().foreach(println)
+
+      // 25. mapValue
+      // pairRDD ,只对value做操作
+      // 例子对所有的value乘10
+//      val mvRDD = sc.parallelize(List(("a",3),("a",5),("c",6),("c",2),("b",6)))
+//      val mapvRDD = mvRDD.mapValues(_*10)
+//      mapvRDD.collect().foreach(println)
+
+      // 26. join
+      // 两个pairRDD，相同的key值关联，value形成一个tuple；有笛卡尔积，性能较低
+//      val joinRDD1 = sc.parallelize(Array((1,"a"),(2,"b"),(3,"c"),(4,"d"),(5,"e")))
+//      val joinRDD2 = sc.parallelize(Array((1,11),(2,222),(3,33),(4,44),(5,55)))
+//      val joinRDD = joinRDD1.join(joinRDD2)
+//      joinRDD.collect().foreach(println)
+
+      // 27. cogroup
+      //  相同的key值形成一个tuple，tuple里面的value是一个个的集合
+      val coRDD1 = sc.parallelize(Array((1,"a"),(2,"b"),(3,"c"),(4,"d"),(5,"e")))
+      val coRDD2 = sc.parallelize(Array((1,11),(2,222),(3,33),(4,44),(5,55)))
+      val coRDD = coRDD1.cogroup(coRDD2)
+      coRDD.collect().foreach(println)
   }
 }
