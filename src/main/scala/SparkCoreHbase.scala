@@ -9,7 +9,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 
 object SparkCoreHbase {
   def main(args: Array[String]): Unit = {
-    val config = new SparkConf().setMaster("local[*]").setAppName("mysql")
+    val config = new SparkConf().setMaster("local[*]").setAppName("hbase")
     val sc = new SparkContext(config)
 
     val conf = HBaseConfiguration.create()

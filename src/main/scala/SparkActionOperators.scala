@@ -2,7 +2,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 
 object SparkActionOperators {
   def main(args: Array[String]): Unit = {
-    val config:SparkConf = new SparkConf().setMaster("local[*]").setAppName("SparkOperator")
+    val config:SparkConf = new SparkConf().setMaster("local[*]").setAppName("SparkActionOperator")
     val sc = new SparkContext(config)
 
     // 1. reduce
