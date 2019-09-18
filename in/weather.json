@@ -1,0 +1,6 @@
+{"id" : 1,"city" : "sz","weather" : "暴雨","number" : 5, "spot" : "window"},
+{"id" : 2,"city" : "bj","weather" : "多云","number" : 3,"spot" : "door"},
+{"id" : 3,"city" : "bj","weather" : "雾霾","number" : 4,"spot" : "door"},
+{"id" : 4,"city" : "sh","weather" : "晴","number" : 7,"spot" : "key"},
+{"id" : 5,"city" : "gz","weather" : "大雨","number" : 5,"spot" : "spout"},
+{"id" : 6,"city" : "nanjing","weather" : "阴","number" : 1,"spot" : "sea"}
