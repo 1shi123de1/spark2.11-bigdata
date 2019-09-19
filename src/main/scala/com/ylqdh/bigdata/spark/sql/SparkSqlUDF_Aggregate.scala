@@ -1,7 +1,9 @@
+package com.ylqdh.bigdata.spark.sql
+
 import org.apache.spark.SparkConf
-import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.expressions.{MutableAggregationBuffer, UserDefinedAggregateFunction}
 import org.apache.spark.sql.types.{DataType, DoubleType, LongType, StructType}
+import org.apache.spark.sql.{Row, SparkSession}
 
 object SparkSqlUDF_Aggregate {
   def main(args: Array[String]): Unit = {

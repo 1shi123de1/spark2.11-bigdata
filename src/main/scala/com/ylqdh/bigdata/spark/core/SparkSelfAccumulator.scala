@@ -1,3 +1,5 @@
+package com.ylqdh.bigdata.spark.core
+
 import java.util
 
 import org.apache.spark.util.AccumulatorV2

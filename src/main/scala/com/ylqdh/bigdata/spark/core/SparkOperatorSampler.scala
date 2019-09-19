@@ -1,3 +1,5 @@
+package com.ylqdh.bigdata.spark.core
+
 
 /*
   有一份数据，数据结构如下：

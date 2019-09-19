@@ -1,3 +1,5 @@
+package com.ylqdh.bigdata.spark.sql
+
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 

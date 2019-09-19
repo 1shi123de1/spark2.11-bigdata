@@ -1,4 +1,6 @@
-import org.apache.spark.{SparkConf,SparkContext}
+package com.ylqdh.bigdata.spark.core
+
+import org.apache.spark.{SparkConf, SparkContext}
 
 object SparkWordCount {
   def main(args: Array[String]): Unit = {

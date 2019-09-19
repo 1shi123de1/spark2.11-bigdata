@@ -1,3 +1,5 @@
+package com.ylqdh.bigdata.spark.core
+
 import org.apache.spark.{SparkConf, SparkContext}
 
 object SparkActionOperators {

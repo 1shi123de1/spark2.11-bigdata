@@ -1,3 +1,5 @@
+package com.ylqdh.bigdata.spark.core
+
 import org.apache.hadoop.hbase.client.{Put, Result}
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable
 import org.apache.hadoop.hbase.mapred.TableOutputFormat

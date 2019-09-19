@@ -1,3 +1,5 @@
+package com.ylqdh.bigdata.spark.core
+
 import java.sql.PreparedStatement
 
 import org.apache.spark.rdd.JdbcRDD
