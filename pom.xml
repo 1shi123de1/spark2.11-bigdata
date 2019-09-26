@@ -77,11 +77,13 @@
             <version>0.6.2</version>
         </dependency>
 
+        <!-- 字符串验证工具类 可选 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.8.1</version>
         </dependency>
+
     </dependencies>
     <build>
         <finalName>WordCount</finalName>
@@ -123,6 +125,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
             </plugin>
 
         </plugins>

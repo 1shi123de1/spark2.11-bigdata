@@ -1,4 +1,4 @@
-package project.imooc.ylqdh.bigdata.ip;
+package project.imooc.ylqdh.bigdata.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +23,7 @@ public class IPAddressUtils {
     private String IP_FILE="qqwry.dat";
     /**
      * 纯真IP数据库保存的文件夹
+     * qqwry.dat 文件放在此文件夹下
      */
     private String INSTALL_DIR="in/";
 
@@ -583,7 +584,10 @@ public class IPAddressUtils {
     public static void main(String[] args){
         IPAddressUtils ip = new IPAddressUtils();
         ip.init();
-        String address = "183.14.133.69";
-        System.out.println("IP地址["+address + "]获取到的区域信息:" + ip.getIPLocation(address).getCountry() + ", 获取到的城市:" + ip.getIPLocation(address).getCity() + ", 运营商:"+ip.getIPLocation(address).getArea());
+        String address = "113.77.139.245";
+        System.out.println("IP地址["+address
+                + "]获取到的区域信息:" + ip.getIPLocation(address).getCountry()
+                + ", 获取到的城市:" + ip.getIPLocation(address).getCity()
+                + ", 运营商:"+ip.getIPLocation(address).getArea());
     }
 }

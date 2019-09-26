@@ -1,4 +1,4 @@
-package project.imooc.ylqdh.bigdata.ip;
+package project.imooc.ylqdh.bigdata.utils;
 
 public class IPLocation {
     /**
