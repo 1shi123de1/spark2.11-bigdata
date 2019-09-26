@@ -10,6 +10,7 @@ object SparkSqlJson {
     val sparkSession:SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
 
     // 从文件源中创建dataFrame
+    // 如果直接读txt文件，则是先把文件创建为rdd，在RDD中添加schema信息转成DataFrame
     val frame = sparkSession.read.json("in/weather.json")
 
     // 直接展示数据
