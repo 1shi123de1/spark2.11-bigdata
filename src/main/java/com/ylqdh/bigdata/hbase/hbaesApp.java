@@ -118,13 +118,14 @@ public class hbaesApp {
 
     @Test
     public void testGet01() throws IOException {
-        table = connection.getTable(TableName.valueOf(tableName));
+//        table = connection.getTable(TableName.valueOf(tableName));
+        table = connection.getTable(TableName.valueOf("access_20190130"));
 
-        Get get = new Get("ylqdh".getBytes());
+        Get get = new Get("y".getBytes());
 
         // get可以加cf，column
 //        get.addFamily(Bytes.toBytes("info"));
-        get.addColumn(Bytes.toBytes("info"),Bytes.toBytes("city"));
+//        get.addColumn(Bytes.toBytes("info"),Bytes.toBytes("city"));
 
         Result result = table.get(get);
         printResult(result);
