@@ -7,13 +7,18 @@ import com.sun.javafx.util.Logging
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.time.FastDateFormat
 import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.hbase.client.{Admin, Connection, ConnectionFactory, Put}
+import org.apache.hadoop.fs.{FileSystem, Path}
+import org.apache.hadoop.hbase.client._
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable
-import org.apache.hadoop.hbase.mapreduce.TableOutputFormat
+import org.apache.hadoop.hbase.mapreduce.{HFileOutputFormat2, LoadIncrementalHFiles, TableOutputFormat}
 import org.apache.hadoop.hbase.util.Bytes
-import org.apache.hadoop.hbase.{HColumnDescriptor, HTableDescriptor, TableName}
+import org.apache.hadoop.hbase.{HColumnDescriptor, HTableDescriptor, KeyValue, TableName}
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 import org.apache.spark.sql.{Row, SparkSession}
+import project.imooc.ylqdh.bigdata.utils.LogFormat
+import org.apache.hadoop.mapreduce.{Job => NewAPIHadoopJob}
+
+import scala.collection.mutable.ListBuffer
 
 /*
     对日志进行ETL操作：把数据从文件系统(本地、HDFS)拿到进行清洗(ip解析、ua解析、time格式化)之后，最终存储到HBase中
@@ -32,7 +37,8 @@ import org.apache.spark.sql.{Row, SparkSession}
         column：把文件系统上解析出来的df的字段放到Map中，然后循环拼成一个rowkey对应的cf下的所有列
  */
 
-object LogApp extends Logging {
+// 优化： 直接生成HFile
+object LogETLAppV3 extends Logging {
 
   def main(args: Array[String]): Unit = {
 
@@ -42,11 +48,13 @@ object LogApp extends Logging {
 //    }
 
 
-    val day = "20190130"   // 先写死，后续通过shell 脚本传递给 spark-submit 参数获得
+//    val day = args(0)   // 先写死，后续通过shell 脚本传递给 spark-submit 参数获得
 //    val input = s"hdfs://szgwnet01:9000/access/$day/*"
+    val day = "20190130"
     val input = "in/access_format.log"
 
     val spark = SparkSession.builder().config("spark.serializer","org.apache.spark.serializer.KryoSerializer").appName("LogApp").master("local[*]").getOrCreate()
+//    val spark = SparkSession.builder().getOrCreate()
     import spark.implicits._
 
     /*
@@ -56,9 +64,10 @@ object LogApp extends Logging {
     val logDF = spark.read.format("解析class").option("path","in/access.log").load()
      */
 
+    //spark.read.format("").option("","").load()
     // 在Java中处理日志为指定格式
-//    val logfomat = new LogFormat()
-//    logfomat.format("in/access.log","in/access_format.log")
+    val logfomat = new LogFormat()
+    logfomat.format("in/access.log",input)
 
     // spark读取处理好的日志文件，并把txt格式的文件转换为DataFrame
     val txtRDD = spark.sparkContext.textFile(input)
@@ -68,7 +77,6 @@ object LogApp extends Logging {
     val rowRDD = txtRDD.map(_.split("\t"))
                       .map(cells => Row(cells(0),cells(1),cells(2),cells(3),cells(4),cells(5),cells(6),cells(7),cells(8),cells(9),cells(10),cells(11),cells(12),cells(13),cells(14)))
     var logDF = spark.createDataFrame(rowRDD,schema)
-
 
     // udf函数 转换时间格式
     import org.apache.spark.sql.functions._
@@ -86,53 +94,62 @@ object LogApp extends Logging {
 
     // TODO 上面把日志数据清洗好了，把它存进HBase中
     // 涉及到HBase表的设计，需要多少个列族，哪些字段放进哪些列族，rowkey如何设计
-    val hbaseInfoRDD = logDF.rdd.map(x => {
-      val ip = x.getAs[String]("ip")
-      val province = x.getAs[String]("province")
-      val city = x.getAs[String]("city")
-      val operator = x.getAs[String]("operator")
-      val time = x.getAs[String]("time")
-      val url = x.getAs[String]("url")
-      val method = x.getAs[String]("method")
-      val protocal = x.getAs[String]("protocal")
-      val status = x.getAs[String]("status")
-      val bytesent = x.getAs[String]("bytesent")
-      val referer = x.getAs[String]("referer")
-      val browserName = x.getAs[String]("browserName")
-      val browserVersion = x.getAs[String]("browserVersion")
-      val osName = x.getAs[String]("osName")
-      val osVersion = x.getAs[String]("osVersion")
-      val formattime = x.getAs[String]("formattime")
+    val hbaseInfoRDD = logDF.rdd.mapPartitions(partition => {
 
-      val columns = scala.collection.mutable.HashMap[String,String]()
-      columns.put("ip",ip)
-      columns.put("province",province)
-      columns.put("city",city)
-      columns.put("operator",operator)
-      columns.put("time",time)
-      columns.put("url",url)
-      columns.put("method",method)
-      columns.put("protocal",protocal)
-      columns.put("status",status)
-      columns.put("bytesent",bytesent)
-      columns.put("referer",referer)
-      columns.put("browserName",browserName)
-      columns.put("browserVersion",browserVersion)
-      columns.put("osName",osName)
-      columns.put("osVersion",osVersion)
-      columns.put("formattime",formattime)
+      partition.flatMap(x=>{
+        val ip = x.getAs[String]("ip")
+        val province = x.getAs[String]("province")
+        val city = x.getAs[String]("city")
+        val operator = x.getAs[String]("operator")
+        val time = x.getAs[String]("time")
+        val url = x.getAs[String]("url")
+        val method = x.getAs[String]("method")
+        val protocal = x.getAs[String]("protocal")
+        val status = x.getAs[String]("status")
+        val bytesent = x.getAs[String]("bytesent")
+        val referer = x.getAs[String]("referer")
+        val browserName = x.getAs[String]("browserName")
+        val browserVersion = x.getAs[String]("browserVersion")
+        val osName = x.getAs[String]("osName")
+        val osVersion = x.getAs[String]("osVersion")
+        val formattime = x.getAs[String]("formattime")
 
-      // HBase api
-      // HBase rowkey
-      val rowkey = getRowKey(day,referer+url+ip+bytesent)
-      // put对象
-      val put = new Put(Bytes.toBytes(rowkey))
-      // 每一个rowkey对应的cf中的所有column字段
-      for((k,v) <- columns) {
-        put.addColumn(Bytes.toBytes("y"),Bytes.toBytes(k.toString),Bytes.toBytes(v.toString))
-      }
-      (new ImmutableBytesWritable(rowkey.getBytes),put)
-    })
+        val columns = scala.collection.mutable.HashMap[String,String]()
+        columns.put("ip",ip)
+        columns.put("province",province)
+        columns.put("city",city)
+        columns.put("operator",operator)
+        columns.put("time",time)
+        columns.put("url",url)
+        columns.put("method",method)
+        columns.put("protocal",protocal)
+        columns.put("status",status)
+        columns.put("bytesent",bytesent)
+        columns.put("referer",referer)
+        columns.put("browserName",browserName)
+        columns.put("browserVersion",browserVersion)
+        columns.put("osName",osName)
+        columns.put("osVersion",osVersion)
+        columns.put("formattime",formattime)
+
+        // HBase api
+        // HBase rowkey
+        val rowkey = getRowKey(day,referer+url+ip+bytesent)
+        val rk = Bytes.toBytes(rowkey)
+
+        // put对象
+        val put = new Put(Bytes.toBytes(rowkey))
+
+        val list = new ListBuffer[((String,String),KeyValue)]()
+        // 每一个rowkey对应的cf中的所有column字段
+        for((k,v) <- columns) {
+          val keyValue = new KeyValue(rk,"y".getBytes,Bytes.toBytes(k),Bytes.toBytes(v))
+          list += (rowkey,k) ->keyValue
+        }
+
+        list.toList
+      })
+    }).sortByKey().map(x=>( new ImmutableBytesWritable(Bytes.toBytes(x._1._1)),x._2))
 
     val hbbaseConf = new Configuration()
     hbbaseConf.set("hbase.rootdir","hdfs://szgwnet01:9000/hbase")
@@ -142,14 +159,26 @@ object LogApp extends Logging {
     // 设置写数据到哪个表中
     hbbaseConf.set(TableOutputFormat.OUTPUT_TABLE,tableName)
 
-    // 保存数据
-    hbaseInfoRDD.saveAsNewAPIHadoopFile(
-      "",
-      classOf[ImmutableBytesWritable],
-      classOf[Put],
-      classOf[TableOutputFormat[ImmutableBytesWritable]],
-      hbbaseConf
-    )
+   val job = NewAPIHadoopJob.getInstance(hbbaseConf)
+   val htable = new HTable(hbbaseConf,tableName)
+   HFileOutputFormat2.configureIncrementalLoad(job,htable.getTableDescriptor,htable.getRegionLocator)
+
+   val output = "hdfs://szgwnet01:9000/test/access/v3"
+   val outputPath = new Path(output)
+   hbaseInfoRDD.saveAsNewAPIHadoopFile(
+     output,
+     classOf[ImmutableBytesWritable],
+     classOf[KeyValue],
+     classOf[HFileOutputFormat2],
+     job.getConfiguration
+   )
+
+    if(FileSystem.get(hbbaseConf).exists(outputPath)){
+      val load = new LoadIncrementalHFiles(job.getConfiguration)
+      load.doBulkLoad(outputPath,htable)
+
+      FileSystem.get(hbbaseConf).delete(outputPath,true)
+    }
 
 //    logDF.show(false)
 
@@ -157,7 +186,7 @@ object LogApp extends Logging {
   }
 
   def createHbaseTable(day:String,conf:Configuration) ={
-    val table = "access_" + day
+    val table = "access_v3_" + day
 
     var connection:Connection = null
     var admin:Admin = null
@@ -212,5 +241,28 @@ object LogApp extends Logging {
     builder.append(crc32.getValue)
 
     builder.toString()
+  }
+
+  def flush(table:String,conf:Configuration): Unit ={
+
+    var connection:Connection = null
+    var admin:Admin = null
+    try {
+      connection = ConnectionFactory.createConnection(conf)
+      admin = connection.getAdmin
+
+      // memstore数据刷写到storefile中
+      admin.flush(TableName.valueOf(table))
+
+    } catch {
+      case e:Exception => e.printStackTrace()
+    } finally {
+      if( null != admin ) {
+        admin.close()
+      }
+      if ( null != connection ) {
+        connection.close()
+      }
+    }
   }
 }
