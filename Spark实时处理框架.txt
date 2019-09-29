@@ -1,0 +1,25 @@
+基于Spark的流处理框架
+项目背景：
+    离线处理/批处理：慕课网的访问日志->点击、搜索
+    实时处理：订单日志
+        谁、时间、下单课程、支付、IP(运营商、地市)、UA
+
+现有的流处理系统：
+    Spark Streaming
+    Structured Streaming(*****未来趋势)
+    Flik
+    Storm
+    Kafka Stream
+
+本项目的架构及处理流程：
+    Log ==> Flume ==> Kafka ==> SparkStreaming(Direat) ==> Redis
+
+项目需求：
+    1)统计每天付费成功的总订单数、订单总金额
+    2)付费订单占总下单的占比
+Spark Streaming来进行统计分析，分析结果写入到Redis中(数据类型选择？？)
+
+Spark Streaming&Kafka&Redis整合
+    日志的格式(以json格式提供)：  time,userid,courseid,orderid,fee,flag
+                   字段意思： 下单时间，用户id，课程id，订单id，费用，是否已付款
+
