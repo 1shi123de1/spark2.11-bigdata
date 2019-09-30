@@ -1,23 +1,28 @@
-package project.imooc.ylqdh.bigdata.streaming.utils
+package project.imooc.ylqdh.bigdata.streaming.spark
 
 import java.util
-import java.util.{Date, UUID}
+import java.util.{Date, Properties, UUID}
 
 import com.alibaba.fastjson.JSONObject
 import org.apache.commons.lang3.time.FastDateFormat
+import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
+import project.imooc.ylqdh.bigdata.streaming.utils.ParamsConf
 
 import scala.util.Random
 
-/*
-    生成mock付费日志
- */
-object MakeMockData {
+object KafkaProducerApp {
   def main(args: Array[String]): Unit = {
+    val prop = new Properties()
+    prop.put("key.serializer","org.apache.kafka.common.serialization.StringSerializer")
+    prop.put("value.serializer","org.apache.kafka.common.serialization.StringSerializer")
+    prop.put("bootstrap.servers",ParamsConf.brokers)
+    prop.put("request.required,acks","1")
+    val topic = ParamsConf.topic
+    val producer = new KafkaProducer[String,String](prop)
+
     val random = new Random()
     val dateFormat = FastDateFormat.getInstance("yyyyMMddHHmmss")
-
-    // time,userid,courseid,orderid,fee,flag
-    for(i <- 0 to 9) {
+    for (i <- 1 to 100) {
       val time = dateFormat.format(new Date())
       val userid = random.nextInt(1000)+""
       val courseid = random.nextInt(500)+""
@@ -35,7 +40,9 @@ object MakeMockData {
       map.put("flag",flag)
 
       val json = new JSONObject(map)
-      println(json)
+
+      producer.send(new ProducerRecord[String,String](topic(0),1+"",json.toString))
     }
   }
+
 }

@@ -22,4 +22,14 @@ Spark Streaming来进行统计分析，分析结果写入到Redis中(数据类�
 Spark Streaming&Kafka&Redis整合
     日志的格式(以json格式提供)：  time,userid,courseid,orderid,fee,flag
                    字段意思： 下单时间，用户id，课程id，订单id，费用，是否已付款
+    这里用代码生成数据的方式，用Kafka生产者生产；后续生成文件，用flume读取数据，sink到Kafka的方式
 
+SparkStreaming 读取kafka的数据，通过fastjson的方式把我们所需要的字段解析出来；
+然后根据不同的业务选择合适的redis的数据类型进行存储。
+Kafka offset问题：
+    如果不管理Kafka的offset，那么SparkStreaming只能拿到最新的数据或者从头开始拿数据，这数据会有丢失或重复。
+正确的做法：第一次应用程序启动的时候，要从某个地方获取已经消费过的offset，然后当业务逻辑处理完之后，把处理完的offset保存到某个地方
+offset存储的地方：
+    CheckPoint(不推荐)
+    Kafka
+    ZK/Mysql/HBase/Redis
