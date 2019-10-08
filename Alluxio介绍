@@ -1,0 +1,81 @@
+Alluxio(www.alluxio.io):
+    前身版本名字-> Tachyon 超光速粒子
+    以内存为中心的分布式文件系统
+    介于计算层和存储层之间
+        计算层：Spark、Flink、MapReduce
+        存储层：HDFS、S3
+    可以看做在内存中的一个Cache系统
+    将计算和存储分离
+
+能够为我们带来什么？
+    现在的大数据application对时效性要求越来越高，所以很多引擎都是基于内存的
+    但是基于内存有两面性，除了快，还有以下缺点：
+        a.2个Spark Application之间共享数据(计算过程中的数据)，需要写磁盘操作
+        b.基于JVM对数据进行缓存
+            Spark Application = 1 Driver + n Executor
+        c.2 Spark Application操作同一份数据时
+
+Alluxio在Spark框架中的位置：
+ -----------------------------------------------------
+ |   Core    SQL     Streaming   MLlib   GraphX      |
+ -----------------------------------------------------
+ ---------------------------------------------
+ |                SPARK                       |
+ ----------------------------------------------
+          ----------------
+          |    Alluxio   |
+          ----------------
+       -----------------------
+      |         HDFS         |
+       -----------------------
+   ---------------------------------------
+  |             YARN/Mesos               |
+   ---------------------------------------
+
+
+
+特点：
+    1)原生的API和文件系统的非常类似
+    2)兼容性好，hadoop、Spark、Flink
+    3)天生支持列式格式存储
+    4)底层文件系统是可插拔的
+    5)Web UI
+    6)用户命令行shell
+
+Alluxio部署(单机版)：
+    1)下载解压
+    2)配置环境变量，bin目录加入path即可
+    3)修改配置文件
+        alluxio-site.properties.template修改为alluxio-site.properties
+        编辑它，把里面的alluxio.master.hostname属性的值修改为当前的hostname
+        masters、workers文件的值修改为当前的hostname
+    4)格式化  alluxio format
+    5)启动   alluxio-start.sh local SudoMount
+当和HDFS结合时，还需alluxio-site.properties配置一个参数(属性值为HDFS的url)
+    6)alluxio.underfs.address=hdfs://szgwnet01:9000
+
+Alluxio常用的命令行参数：
+    alluxio fs
+            ls  mkdir  lsr
+            copyFromLocal  copyToLocal
+
+Alluxio与MapReduce整合：
+   1) Hadoop core-site.xml加入如下配置项：
+    <property>
+        <name>fs.alluxio.impl</name>
+        <value>alluxio.hadoop.FileSystem</value>
+    </property>
+    2) 运行jar包时，需要把alluxio的client jar包带上
+       测试： hadoop jar ${HADOOP_HOME}share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.7.jar wordcount -libjars ${ALLUXIO_HOME/client/alluxio-1.8.2-client.jar INPUT OUTPUT
+            input、output目录使用alluxio的文件系统
+            INPUT是 alluxio://szgwnet01:19998/test/input/zhongzheng.txt
+            OUTPUT是 alluxio://szgwnet01:19998/test/output
+
+Alluxio与Spark整合：
+    1)在Spark shell启动时加上参数，加入alluxio的client jar包
+
+
+做了几个计算引擎与Alluxio的整合，发现业务逻辑根本没有变化，只是：
+    1)环境上变化,加alluxio jar包
+    2)hdfs://.... => alluxio://....
+
