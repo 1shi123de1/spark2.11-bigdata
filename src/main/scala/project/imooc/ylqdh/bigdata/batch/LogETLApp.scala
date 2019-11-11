@@ -59,7 +59,6 @@ object LogETLApp extends Logging {
     val logDF = spark.read.format("解析class").option("path","in/access.log").load()
      */
 
-    //spark.read.format("").option("","").load()
     // 在Java中处理日志为指定格式
     val logfomat = new LogFormat()
     logfomat.format("in/access.log",input)

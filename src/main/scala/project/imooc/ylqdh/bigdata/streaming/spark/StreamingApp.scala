@@ -13,7 +13,7 @@ import project.imooc.ylqdh.bigdata.streaming.utils.{ParamsConf, RedisPool}
 object StreamingApp {
   def main(args: Array[String]): Unit = {
 
-    val sparkConf = new SparkConf().setMaster("local[*]").setAppName("StreamingApp")
+    val sparkConf = new SparkConf().setMaster("local[*]").setAppName("StreamingApp").set("spark.streaming.kafka.maxRatePerPartition","100")
     val ssc = new StreamingContext(sparkConf,Seconds(5))
 
     // kafka 消费数据
