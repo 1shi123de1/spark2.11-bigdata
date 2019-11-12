@@ -7,7 +7,7 @@
 现有的流处理系统：
     Spark Streaming
     Structured Streaming(*****未来趋势)
-    Flik
+    Flink
     Storm
     Kafka Stream
 
