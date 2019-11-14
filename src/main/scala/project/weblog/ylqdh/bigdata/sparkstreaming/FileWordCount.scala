@@ -8,7 +8,7 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
  */
 object FileWordCount {
   def main(args: Array[String]): Unit = {
-    val sparkconf = new SparkConf().setAppName("NetworkWordCount").setMaster("local[*]")
+    val sparkconf = new SparkConf().setAppName("FileWordCount").setMaster("local[*]")
 
     /*
      创建StreamingContext需要两个参数：SparkConf、batch interval
