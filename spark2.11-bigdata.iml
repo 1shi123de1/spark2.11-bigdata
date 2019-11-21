@@ -145,12 +145,12 @@
     <orderEntry type="library" name="Maven: org.apache.spark:spark-streaming_2.11:2.4.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.spark:spark-streaming-kafka-0-10_2.11:2.4.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.kafka:kafka-clients:2.0.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.spark:spark-streaming-flume_2.11:2.4.4" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.flume:flume-ng-core:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.flume:flume-ng-configuration:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.mina:mina-core:2.0.4" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.flume:flume-ng-sdk:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.spark:spark-streaming-flume-sink_2.11:2.4.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.spark:spark-streaming-flume_2.11:2.4.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.flume:flume-ng-core:1.6.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.flume:flume-ng-configuration:1.6.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.mina:mina-core:2.0.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.flume:flume-ng-sdk:1.6.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.spark:spark-streaming-flume-sink_2.11:2.4.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.38" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.hbase:hbase-client:1.2.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.hbase:hbase-annotations:1.2.0" level="project" />
@@ -221,12 +221,12 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.sourceforge.jregex:jregex:1.2_01" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.8.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.alibaba:fastjson:1.2.51" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.typesafe:config:1.3.3" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.avro:avro:1.8.2" level="project" />
+    <orderEntry type="library" name="Maven: com.typesafe:config:1.3.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.avro:avro:1.8.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-compress:1.8.1" level="project" />
-    <orderEntry type="library" name="Maven: org.tukaani:xz:1.5" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.avro:avro-ipc:1.8.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.velocity:velocity:1.7" level="project" />
-    <orderEntry type="library" name="Maven: org.mortbay.jetty:servlet-api:2.5-20081211" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.tukaani:xz:1.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.avro:avro-ipc:1.8.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.velocity:velocity:1.7" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.mortbay.jetty:servlet-api:2.5-20081211" level="project" />
   </component>
 </module>
