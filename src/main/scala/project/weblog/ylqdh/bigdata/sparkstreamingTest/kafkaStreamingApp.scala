@@ -1,4 +1,4 @@
-package project.weblog.ylqdh.bigdata.sparkstreaming
+package project.weblog.ylqdh.bigdata.sparkstreamingTest
 
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.spark.SparkConf
@@ -8,7 +8,7 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 object kafkaStreamingApp {
   def main(args: Array[String]): Unit = {
     val sparkConf = new SparkConf().setAppName("kafkaStreamingApp").setMaster("local[*]")
-    val ssc = new StreamingContext(sparkConf,Seconds(5))
+    val ssc = new StreamingContext(sparkConf,Seconds(60))
 
     val topic = List("ylqdh")
     val kafkaParams = Map[String,Object](
@@ -27,10 +27,10 @@ object kafkaStreamingApp {
       ConsumerStrategies.Subscribe[String,String](topic,kafkaParams))
 
     // x.value获得数据里的值
-    messages.map(x => x.value())
-        .flatMap(_.split(" "))
-        .map(x => (x,1))
-        .reduceByKey(_+_)
+    messages.map(x => x.value()).count()
+//        .flatMap(_.split(" "))
+      //        .map(x => (x,1))
+      //        .reduceByKey(_+_)
         .print()
 
     ssc.start()

@@ -1,4 +1,4 @@
-package project.weblog.ylqdh.bigdata.sparkstreaming
+package project.weblog.ylqdh.bigdata.sparkstreamingTest
 
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.{Seconds, StreamingContext}

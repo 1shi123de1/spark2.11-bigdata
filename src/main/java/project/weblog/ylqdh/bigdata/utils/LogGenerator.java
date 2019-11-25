@@ -12,7 +12,8 @@ import java.util.Date;
     模拟日志数据
     把需要的数据用数组形式存放，然后通过随机数，组合成一条日志数据
     一条日志数据格式如下：
-    时间  uri  IP   referer   status_code
+    ip  time    url     status_code     referer
+    132.147.198.48	2019-11-25 09:59:48	"GET /class/146.html HTTP/1.1"	300	https://www.so.com/s?q=Hadoop基础
  */
 public class LogGenerator {
 
