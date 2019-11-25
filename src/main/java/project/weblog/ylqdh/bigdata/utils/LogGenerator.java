@@ -39,10 +39,10 @@ public class LogGenerator {
                 "Hive ETL","Storm实战","Flume+Kafka","大数据面试"};
         int[] status_codes = {200,205,300,304,400,404,500,504,599};
 
-        // 打开写文件流
+        // 打开写文件流,注意要追加写入
         File f = new File(args[0]);
         f.createNewFile();
-        try(FileWriter writer = new FileWriter(f);
+        try(FileWriter writer = new FileWriter(f,true);
             BufferedWriter out = new BufferedWriter(writer)
         ){
             int i = 10;
