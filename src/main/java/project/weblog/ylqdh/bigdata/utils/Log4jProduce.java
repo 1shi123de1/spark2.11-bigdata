@@ -5,9 +5,9 @@ import org.apache.log4j.Logger;
 /*
     模拟日志生成
  */
-public class LogProduce {
+public class Log4jProduce {
 
-    private static Logger logger = Logger.getLogger(LogProduce.class.getName());
+    private static Logger logger = Logger.getLogger(Log4jProduce.class.getName());
 
     public static void main(String[] args) throws InterruptedException {
         int index =0;

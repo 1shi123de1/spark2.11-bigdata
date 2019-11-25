@@ -63,9 +63,9 @@ public class LogGenerator {
 
                 String today = df.format(new Date());
 
-                out.write(today+"\t"+uri+"\t"+ip+"\t"+url+"\t"+statu_code+"\r\n");
+                out.write(ip+"\t"+today+"\t\"GET "+uri+" HTTP/1.1\"\t"+statu_code+"\t"+url+"\r\n");
                 out.flush();
-                System.out.println(today+"\t"+uri+"\t"+ip+"\t"+url+"\t"+statu_code+"\t");
+//                System.out.println(ip+"\t"+today+"\t\"GET "+uri+" HTTP/1.1\"\t"+statu_code+"\t"+url);
                 i--;
             }
         } catch (IOException e) {
