@@ -1,6 +1,8 @@
 package com.ylqdh.bigdata.hbase;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -10,6 +12,7 @@ import java.io.IOException;
 /**
  * HBase 操作工具类
  * java 工具类建议采用单例模式封装
+ * 工具类中的get和put函数要配套使用
  */
 public class HBaseUtils {
     Admin admin = null;
@@ -84,17 +87,24 @@ public class HBaseUtils {
 
         Get get = new Get(Bytes.toBytes(rowkey));
 
-        byte[] value = null;
-        String val = "";
+        String value = null;
         try {
-            value = table.get(get).getValue(Bytes.toBytes(cf),Bytes.toBytes(column));
+            for (Cell cell : table.get(get).rawCells()) {
+                value = Bytes.toString(CellUtil.cloneValue(cell));
+            }
 
-            val = Bytes.toString(value);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return val;
+        return value;
+    }
+
+    public static void main(String[] args) {
+//        HBaseUtils.getInstance().put("weblog_course_click","20191125_111","info","click_count","5");
+        System.out.println(HBaseUtils.getInstance().get("weblog_course_click","20191125_111","info","click_count"));
+//        System.out.println(HBaseUtils.getInstance().get("weblog_course_click","20191125_131","info","click_count"));
+
     }
 
 }

@@ -20,7 +20,7 @@ public class hbaesApp {
     private Table table = null;
     private Admin admin = null;
 
-    private String tableName = "imooc_hbase_java_api";
+    private String tableName = "weblog_course_click";
 
     @Before
     public void setUp() {
@@ -119,9 +119,9 @@ public class hbaesApp {
     @Test
     public void testGet01() throws IOException {
 //        table = connection.getTable(TableName.valueOf(tableName));
-        table = connection.getTable(TableName.valueOf("access_20190130"));
+        table = connection.getTable(TableName.valueOf("weblog_course_click"));
 
-        Get get = new Get("y".getBytes());
+        Get get = new Get("20191126_121".getBytes());
 
         // get可以加cf，column
 //        get.addFamily(Bytes.toBytes("info"));

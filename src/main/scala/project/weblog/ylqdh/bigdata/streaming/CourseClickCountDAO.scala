@@ -1,6 +1,7 @@
 package project.weblog.ylqdh.bigdata.streaming
 
 import com.ylqdh.bigdata.hbase.HBaseUtils
+import org.apache.hadoop.hbase.client.Get
 import org.apache.hadoop.hbase.util.Bytes
 
 import scala.collection.mutable.ListBuffer
@@ -35,15 +36,27 @@ object CourseClickCountDAO {
     * @param day_count
     * @return
     */
-  def count(day_count:String):Long = {
+  def count(day_count:String) = {
 
-    val value = HBaseUtils.getInstance().get(tableName,day_count,cf,quarifer)
+    val table = HBaseUtils.getInstance().getTable(tableName)
+    val get = new Get(Bytes.toBytes(day_count))
+    val value = table.get(get).getValue(cf.getBytes,quarifer.getBytes())
 
     if (value == null ) {
       0L
     }else {
-      value.asInstanceOf[Long]
+      Bytes.toLong(value)
     }
+  }
+
+  def main(args: Array[String]): Unit = {
+    val list = new ListBuffer[CourseClickCountCase]
+    list.append(CourseClickCountCase("20191126_131",10))
+
+//    save(list)
+    println(count("20191126_121"))
+    println(count("20191126_131"))
+
   }
 
 }
