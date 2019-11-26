@@ -32,22 +32,26 @@
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
             <version>${hadoop.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.11</artifactId>
             <version>${spark.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-sql_2.11</artifactId>
             <version>${spark.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-streaming_2.11</artifactId>
             <version>${spark.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- spark streaming 整合 Kafka 依赖 -->
@@ -78,6 +82,7 @@
             <groupId>org.apache.flume.flume-ng-clients</groupId>
             <artifactId>flume-ng-log4jappender</artifactId>
             <version>1.6.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- kafka客户端 -->
@@ -104,6 +109,7 @@
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-server</artifactId>
             <version>${hbase.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -156,7 +162,7 @@
 
     </dependencies>
     <build>
-        <finalName>Spark2.11-bigdata-flume</finalName>
+        <finalName>Weblog-SparkStreaming-Count</finalName>
         <plugins>
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
