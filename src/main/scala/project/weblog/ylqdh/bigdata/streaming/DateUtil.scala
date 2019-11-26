@@ -4,6 +4,9 @@ import java.util.Date
 
 import org.apache.commons.lang3.time.FastDateFormat
 
+/*
+  日期格式化：把yyyy-MM-dd HH:mm:ss 格式化成 yyyyMMddHHmmss
+ */
 object DateUtil {
 
   val YYYYMMDDHHMMSS_FORMAT = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss")
