@@ -9,4 +9,4 @@ package project.weblog.ylqdh.bigdata.streaming
   * @param referer    日志访问的referer
   */
 
-case class ClickLog (ip:String,time:String,courseID:Int,statusCode:Int,referer:String)
+case class ClickLogCase(ip:String, time:String, courseID:Int, statusCode:Int, referer:String)

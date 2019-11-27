@@ -18,6 +18,7 @@ object LogStreamingApp {
     val sparkConf = new SparkConf().setAppName("LogStreamingApp")//.setMaster("local[*]")
     val ssc = new StreamingContext(sparkConf,Seconds(60))
 
+    // 使用Kafka消费者API消费ylqdh中的数据
     val messages = KafkaUtils.createDirectStream(ssc,
       LocationStrategies.PreferConsistent,
       ConsumerStrategies.Subscribe[String,String](ParamsConf.topic,ParamsConf.kafkaParams))
@@ -42,7 +43,7 @@ object LogStreamingApp {
         courseID = classCou.substring(0,classCou.lastIndexOf(".")).toInt
       }
 
-      ClickLog(infos(0),DateUtil.parseToMinute(infos(1)),courseID,infos(3).toInt,infos(4))
+      ClickLogCase(infos(0),DateUtil.parseToMinute(infos(1)),courseID,infos(3).toInt,infos(4))
 
     }).filter(clicklog => clicklog.courseID != 0)
 
