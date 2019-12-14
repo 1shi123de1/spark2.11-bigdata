@@ -38,7 +38,6 @@
     5、数据展示(不涉及)：将分析得到的数据进行可视化显示
         可用技术：HUE、Zeppelin、Echarts、自研产品
 
-
  离线项目中要统计的指标/需求
     1）区域统计：国家、省份
     2）终端统计：浏览器、版本号
@@ -49,3 +48,6 @@
     两种实现：
         Spark Core
         Spark SQL
+        
+        
+  实时日志统计：见 [imooc项目实时流处理介绍](https://github.com/1shi123de1/spark2.11-bigdata/blob/master/imooc%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%97%B6%E6%B5%81%E5%A4%84%E7%90%86%E4%BB%8B%E7%BB%8D.txt)
