@@ -102,6 +102,7 @@ public class IPAddressUtils {
                 //     因为有些系统可能区分大小写导致找不到ip地址信息文件
                 String filename = new File(IP_FILE).getName().toLowerCase();
                 File[] files = new File(INSTALL_DIR).listFiles();
+                System.out.println("file : "+ files);
                 for(int i = 0; i < files.length; i++) {
                     if(files[i].isFile()) {
                         if(files[i].getName().toLowerCase().equals(filename)) {

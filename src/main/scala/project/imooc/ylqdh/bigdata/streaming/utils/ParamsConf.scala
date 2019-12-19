@@ -19,6 +19,11 @@ object ParamsConf {
   val redisHost = config.getString("redis.host")
   val redisDB = config.getInt("redis.db")
 
+  val mysqlDriver = config.getString("db.default.driver")
+  val mysqlURL = config.getString("db.default.url")
+  val mysqlUser = config.getString("db.default.user")
+  val mysqlPwd = config.getString("db.default.password")
+
   val kafkaParams = Map[String,Object](
     "bootstrap.servers" -> brokers,
     "key.deserializer" -> classOf[StringDeserializer],
@@ -29,7 +34,9 @@ object ParamsConf {
   )
 
 
+
   def main(args: Array[String]): Unit = {
-    println(ParamsConf.topic)
+    println(ParamsConf.mysqlDriver+"\n"+ParamsConf.mysqlURL+
+      "\n"+ParamsConf.mysqlUser+"\n"+ParamsConf.mysqlPwd)
   }
 }
