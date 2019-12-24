@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<c3p0-config>
+    <default-config name="mysql">
+
+        <!-- 数据库地址 -->
+        <property name="jdbcUrl">jdbc:mysql://172.16.1.46:3306/test</property>
+                <!-- 数据库驱动 -->
+        <property name="driverClass">com.mysql.jdbc.Driver</property>
+                <!-- 用户名 -->
+        <property name="user">root</property>
+                <!-- 密码 -->
+        <property name="password">123456</property>
+
+                <!-- 连接池初始化时创建的连接数 -->
+        <property name="initialPoolSize">5</property>
+                <!-- 连接池中的最小连接数 -->
+        <property name="minPoolSize">3</property>
+                <!-- 连接池中的最大连接数 -->
+        <property name="maxPoolSize">20</property>
+                <!-- 无空闲连接可用时，可一次性创建新连接的数量 -->
+        <property name="acquireIncrement">2</property>
+                <!-- 获取数据库连接失败后重复尝试的次数 -->
+        <property name="acquireRetryAttempts">3</property>
+                <!-- 两次连接的间隔时间，单位为毫秒 -->
+        <property name = "acquireRetryDelay">1000</property>
+
+    </default-config>
+
+
+    <name-config name="另一个数据库连接">
+        <!-- ....拷贝上面的连接信息 -->
+    </name-config>
+</c3p0-config>

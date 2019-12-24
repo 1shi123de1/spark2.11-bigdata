@@ -26,6 +26,7 @@ public class HBaseUtils {
         configuration.set("hbase.rootdir","hdfs://szgwnet01:9000/hbase");
 
         try {
+            // ConnectionFactory 方式得到的connection是一种连接池的方式，比单独创建一个连接要好
             connection = ConnectionFactory.createConnection(configuration);
             admin = connection.getAdmin();
         } catch (IOException e) {
