@@ -205,6 +205,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jamon:jamon-runtime:2.4.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.lmax:disruptor:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.38" level="project" />
+    <orderEntry type="library" name="Maven: com.oracle:ojdbc6:12.1.0.2" level="project" />
     <orderEntry type="library" name="Maven: com.mchange:c3p0:0.9.5.4" level="project" />
     <orderEntry type="library" name="Maven: com.mchange:mchange-commons-java:0.2.15" level="project" />
     <orderEntry type="library" name="Maven: org.scalikejdbc:scalikejdbc_2.11:3.3.3" level="project" />
